@@ -101,6 +101,7 @@ class Session:
             else:
                 if method == 'HEAD' and data:
                     raise RequestException('Expected perform() to fail when using this hack (???)')
+
             resp = Response()
             resp.content = output_buffer.getvalue()
             resp.headers = CaseInsensitiveDict()
@@ -108,7 +109,7 @@ class Session:
                 k, _, v = line.partition(': ')
                 assert k not in resp.headers
                 resp.headers[k] = v
-            resp.status_code = codes(c.getinfo(pycurl.RESPONSE_CODE))
+            resp._status_code = codes(c.getinfo(pycurl.RESPONSE_CODE))
         finally:
             c.reset()
         return resp
